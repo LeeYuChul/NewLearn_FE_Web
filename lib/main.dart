@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: '팀 뉴런 | value investment',
       theme: themeData,
       initialRoute: '/home',
       onGenerateRoute: Routes.generateRoute,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Main Colors
-  static const Color Oragne = Color(0xFF0F5822);
+  static const Color Oragne = Color(0xFFF58220);
   static const Color Blue = Color(0xFF043B72);
 
   // Graph&illust Colors

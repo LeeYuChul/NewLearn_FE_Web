@@ -59,9 +59,15 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
+    # - assets/icon/
+    # - assets/icon/other/
+    # - assets/icon/24/
+    # - assets/icon/24/gnb_part/
+    # - assets/icon/16/
+    # - assets/icon/40/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -88,3 +94,38 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+  fonts:
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Light.ttf
+          weight: 100
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Regular.ttf
+          weight: 200
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-SemiBold.ttf
+          weight: 400
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Bold.ttf
+          weight: 500
+    - family: score
+      fonts:
+        - asset: assets/fonts/score_dream/SCDream1.otf
+          weight: 100
+        - asset: assets/fonts/score_dream/SCDream2.otf
+          weight: 200
+        - asset: assets/fonts/score_dream/SCDream3.otf
+          weight: 300
+        - asset: assets/fonts/score_dream/SCDream4.otf
+          weight: 400
+        - asset: assets/fonts/score_dream/SCDream5.otf
+          weight: 500
+        - asset: assets/fonts/score_dream/SCDream6.otf
+          weight: 600
+        - asset: assets/fonts/score_dream/SCDream7.otf
+          weight: 700
+        - asset: assets/fonts/score_dream/SCDream8.otf
+          weight: 800
+        - asset: assets/fonts/score_dream/SCDream9.otf
+          weight: 900
