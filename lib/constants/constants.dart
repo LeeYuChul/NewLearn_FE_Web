@@ -11,3 +11,4 @@ export 'package:newlearn_fe_web/constants/font_table.dart';
 // 컴포넌트
 export 'package:newlearn_fe_web/component/custom_appbar.dart';
 export 'package:newlearn_fe_web/component/propensity_card.dart';
+export 'package:newlearn_fe_web/component/animated_gradient_bg.dart';
