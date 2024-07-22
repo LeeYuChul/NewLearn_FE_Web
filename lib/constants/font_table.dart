@@ -90,6 +90,20 @@ class AppTextStyles {
     height: 36 / 30,
   );
 
+  static const TextStyle sc_24_b = TextStyle(
+    fontFamily: 'score',
+    fontWeight: FontWeight.w600,
+    fontSize: 20,
+    height: 28 / 24,
+  );
+
+  static const TextStyle sc_24_r = TextStyle(
+    fontFamily: 'score',
+    fontWeight: FontWeight.w400,
+    fontSize: 20,
+    height: 28 / 24,
+  );
+
   static const TextStyle sc_20_b = TextStyle(
     fontFamily: 'score',
     fontWeight: FontWeight.w600,

@@ -25,7 +25,7 @@ class PropensityCard extends StatelessWidget {
           children: [
             Text(
               '타이틀',
-              style: AppTextStyles.sc_30_b.copyWith(color: Colors.black),
+              style: AppTextStyles.sc_24_b.copyWith(color: Colors.black),
             ),
             Gaps.v25,
             Container(

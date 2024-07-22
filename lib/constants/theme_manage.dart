@@ -6,7 +6,8 @@ ThemeData themeData = ThemeData(
     ),
     useMaterial3: false,
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       centerTitle: false,
     ));
