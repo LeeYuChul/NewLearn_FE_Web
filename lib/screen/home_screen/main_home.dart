@@ -9,19 +9,33 @@ class MainHomePage extends StatefulWidget {
 }
 
 class _MainHomePageState extends State<MainHomePage> {
+  bool showResultPage = false;
+
+  void navigateToResultPage() {
+    setState(() {
+      showResultPage = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: CustomAppBar(),
+    return Scaffold(
+      appBar: const CustomAppBar(),
       body: Stack(
         children: [
-          Positioned.fill(
+          const Positioned.fill(
             child: AnimatedGradient(),
           ),
           Positioned.fill(
             child: ResponsiveLayout(
-              desktopBody: HomePageDesktop(),
-              mobileBody: HomePageDesktop(), // 수정 필요함 추후에 HomePageMobile()로 변경
+              desktopBody: showResultPage
+                  ? const MainResultPage()
+                  : HomePageDesktop(onNext: navigateToResultPage),
+              mobileBody: showResultPage
+                  ? const MainResultPage()
+                  : HomePageDesktop(
+                      onNext:
+                          navigateToResultPage), // 수정 필요함 추후에 HomePageMobile()로 변경
             ),
           ),
         ],

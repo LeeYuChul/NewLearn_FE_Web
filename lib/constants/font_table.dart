@@ -117,4 +117,11 @@ class AppTextStyles {
     fontSize: 20,
     height: 24 / 20,
   );
+
+  static const TextStyle sc_16_r = TextStyle(
+    fontFamily: 'score',
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    height: 18 / 16,
+  );
 }

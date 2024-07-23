@@ -3,7 +3,12 @@ import 'package:newlearn_fe_web/constants/constants.dart';
 import 'package:newlearn_fe_web/manage/data/stock_data.dart';
 
 class HomePageDesktop extends StatefulWidget {
-  const HomePageDesktop({super.key});
+  final VoidCallback onNext;
+
+  const HomePageDesktop({
+    super.key,
+    required this.onNext,
+  });
 
   @override
   State<HomePageDesktop> createState() => _HomePageDesktopState();
@@ -16,6 +21,35 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
   OverlayEntry? _overlayEntry;
   List<Map<String, String>> _filteredStocks = [];
   Map<String, String>? _selectedStock;
+  int selectedPeriodCard = 0;
+  int selectedPropensityCard = 0;
+
+  //기간 선택 카드 탭
+  void _onPeriodCardTap(int index) {
+    setState(() {
+      selectedPeriodCard = index;
+    });
+  }
+
+  //투자 성향 카드 탭
+  void _onPropensityCardTap(int index) {
+    setState(() {
+      selectedPropensityCard = index;
+    });
+  }
+
+  //다음 버튼 활성화 조건
+  bool get isNextButtonActive =>
+      _selectedStock != null &&
+      selectedPeriodCard != 0 &&
+      selectedPropensityCard != 0;
+
+  // 다음 버튼 활성화 탭
+  void _onNextButtonTap() {
+    if (isNextButtonActive) {
+      widget.onNext();
+    }
+  }
 
   void _filterStocks(String query) {
     if (query.isEmpty) {
@@ -156,6 +190,11 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
     );
   }
 
+  //현재 연도를 가져오는 메소드
+  int getThisYear() {
+    return DateTime.now().year;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -165,64 +204,118 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
             ? 24.0
             : 24.0 + (152.0 - 24.0) * ((screenWidth - 600) / (1400 - 600));
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        _removeOverlay();
-      },
-      child: Container(
-        width: screenWidth,
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Gaps.v160,
-            Text(
-              '회사명을 입력해주세요',
-              style: AppTextStyles.sc_30_b.copyWith(color: AppColors.Black),
-            ),
-            Gaps.v40,
-            companyTextField(),
-            Gaps.v102,
-            Text(
-              '투자 성향을 선택해주세요',
-              style: AppTextStyles.sc_30_b.copyWith(color: AppColors.Black),
-            ),
-            Gaps.v40,
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                PropensityCard(),
-                Gaps.h20,
-                PropensityCard(),
-                Gaps.h20,
-                PropensityCard(),
-              ],
-            ),
-            Gaps.v102,
-            Container(
-              width: 200,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
+    return SingleChildScrollView(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          _removeOverlay();
+        },
+        child: Container(
+          width: screenWidth,
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Gaps.v160,
+              Text(
+                '기업명이 무엇인가요?',
+                style: AppTextStyles.sc_30_b.copyWith(color: AppColors.Black),
+              ),
+              Gaps.v40,
+              companyTextField(),
+              Gaps.v102,
+              Text(
+                '판단 기간을 어떻게 설정할까요?',
+                style: AppTextStyles.sc_30_b.copyWith(color: AppColors.Black),
+              ),
+              Gaps.v40,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PeriodCard(
+                    thisYearTitle: '3년',
+                    thisYearDescription:
+                        '${getThisYear() - 1}년부터 ${getThisYear() - 3}년의 기간 동안 판단합니다.',
+                    thisPeriodOnTap: () => _onPeriodCardTap(1),
+                    selectedPeriodCardNum: selectedPeriodCard,
+                    thisPeriodCardNum: 1,
+                  ),
+                  const SizedBox(width: 20),
+                  PeriodCard(
+                    thisYearTitle: '5년',
+                    thisYearDescription:
+                        '${getThisYear() - 1}년부터 ${getThisYear() - 5}년의 기간 동안 판단합니다.',
+                    thisPeriodOnTap: () => _onPeriodCardTap(2),
+                    selectedPeriodCardNum: selectedPeriodCard,
+                    thisPeriodCardNum: 2,
                   ),
                 ],
               ),
-              child: Center(
-                child: Text(
-                  '다음',
-                  style:
-                      AppTextStyles.sc_20_b.copyWith(color: AppColors.Oragne),
+              Gaps.v102,
+              Text(
+                '투자 성향이 어떻게 되시나요?',
+                style: AppTextStyles.sc_30_b.copyWith(color: AppColors.Black),
+              ),
+              Gaps.v40,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PropensityCard(
+                    thisPropTitle: '공격투자형',
+                    thisPropDescription: '자산가치의 변동에 따른\n손실위험을 적극 수용함',
+                    thisPropNum: 1,
+                    selectedPropensityCard: selectedPropensityCard,
+                    thisPropOnTap: () => _onPropensityCardTap(1),
+                  ),
+                  Gaps.h20,
+                  PropensityCard(
+                    thisPropTitle: '위험중립형',
+                    thisPropDescription: '투자에 상응하는 투자위험이\n있음을 충분히 인식하고 있음',
+                    thisPropNum: 2,
+                    selectedPropensityCard: selectedPropensityCard,
+                    thisPropOnTap: () => _onPropensityCardTap(2),
+                  ),
+                  Gaps.h20,
+                  PropensityCard(
+                    thisPropTitle: '안정형',
+                    thisPropDescription: '투자원금에 손실이 발생하는 것을\n원하지 않음',
+                    thisPropNum: 3,
+                    selectedPropensityCard: selectedPropensityCard,
+                    thisPropOnTap: () => _onPropensityCardTap(3),
+                  ),
+                ],
+              ),
+              Gaps.v102,
+              GestureDetector(
+                onTap: _onNextButtonTap,
+                child: Container(
+                  width: 200,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: isNextButtonActive ? Colors.white : AppColors.G4,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      '다음',
+                      style: AppTextStyles.sc_20_b.copyWith(
+                          color: isNextButtonActive
+                              ? AppColors.Oragne
+                              : AppColors.G3),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+              Gaps.v160,
+            ],
+          ),
         ),
       ),
     );

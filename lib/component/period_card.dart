@@ -3,29 +3,29 @@ import 'package:newlearn_fe_web/constants/color_table.dart';
 import 'package:newlearn_fe_web/constants/font_table.dart';
 import 'package:newlearn_fe_web/constants/gaps.dart';
 
-class PropensityCard extends StatelessWidget {
-  final String thisPropTitle, thisPropDescription;
-  final int thisPropNum, selectedPropensityCard;
-  final VoidCallback thisPropOnTap;
+class PeriodCard extends StatelessWidget {
+  final String thisYearTitle, thisYearDescription;
+  final VoidCallback thisPeriodOnTap;
+  final int selectedPeriodCardNum, thisPeriodCardNum;
 
-  const PropensityCard({
+  const PeriodCard({
     super.key,
-    required this.thisPropTitle,
-    required this.thisPropDescription,
-    required this.thisPropNum,
-    required this.selectedPropensityCard,
-    required this.thisPropOnTap,
+    required this.thisYearTitle,
+    required this.thisYearDescription,
+    required this.thisPeriodOnTap,
+    required this.selectedPeriodCardNum,
+    required this.thisPeriodCardNum,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: thisPropOnTap,
+        onTap: thisPeriodOnTap,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
           decoration: BoxDecoration(
-            color: selectedPropensityCard == thisPropNum
+            color: selectedPeriodCardNum == thisPeriodCardNum
                 ? AppColors.G4
                 : Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -40,22 +40,17 @@ class PropensityCard extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                thisPropTitle,
+                thisYearTitle,
                 style: AppTextStyles.sc_24_b.copyWith(color: Colors.black),
-              ),
-              Gaps.v25,
-              Container(
-                width: 200,
-                height: 200,
-                color: Colors.grey,
               ),
               Gaps.v25,
               SizedBox(
                 height: 48,
-                child: Text(
-                  thisPropDescription,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.sc_16_r.copyWith(color: Colors.black),
+                child: Center(
+                  child: Text(
+                    thisYearDescription,
+                    style: AppTextStyles.sc_16_r.copyWith(color: Colors.black),
+                  ),
                 ),
               ),
             ],
