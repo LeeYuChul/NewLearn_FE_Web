@@ -1,17 +1,22 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:newlearn_fe_web/constants/constants.dart';
 import 'package:newlearn_fe_web/manage/data/stock_data.dart';
 
+// GlobalKey 정의
 class HomePageDesktop extends StatefulWidget {
   final VoidCallback onNext;
+  static final GlobalKey<_HomePageDesktopState> homePageDesktopKey =
+      GlobalKey<_HomePageDesktopState>();
 
-  const HomePageDesktop({
-    super.key,
-    required this.onNext,
-  });
+  HomePageDesktop({required this.onNext}) : super(key: homePageDesktopKey);
+
+  static _HomePageDesktopState? get currentState =>
+      homePageDesktopKey.currentState;
 
   @override
-  State<HomePageDesktop> createState() => _HomePageDesktopState();
+  _HomePageDesktopState createState() => _HomePageDesktopState();
 }
 
 class _HomePageDesktopState extends State<HomePageDesktop> {
@@ -21,28 +26,32 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
   OverlayEntry? _overlayEntry;
   List<Map<String, String>> _filteredStocks = [];
   Map<String, String>? _selectedStock;
-  int selectedPeriodCard = 0;
-  int selectedPropensityCard = 0;
+  int _selectedPeriodCard = 0;
+  int _selectedPropensityCard = 0;
+
+  Map<String, String>? get selectedStock => _selectedStock;
+  int get selectedPeriodCard => _selectedPeriodCard;
+  int get selectedPropensityCard => _selectedPropensityCard;
 
   //기간 선택 카드 탭
   void _onPeriodCardTap(int index) {
     setState(() {
-      selectedPeriodCard = index;
+      _selectedPeriodCard = index;
     });
   }
 
   //투자 성향 카드 탭
   void _onPropensityCardTap(int index) {
     setState(() {
-      selectedPropensityCard = index;
+      _selectedPropensityCard = index;
     });
   }
 
   //다음 버튼 활성화 조건
   bool get isNextButtonActive =>
       _selectedStock != null &&
-      selectedPeriodCard != 0 &&
-      selectedPropensityCard != 0;
+      _selectedPeriodCard != 0 &&
+      _selectedPropensityCard != 0;
 
   // 다음 버튼 활성화 탭
   void _onNextButtonTap() {
@@ -237,7 +246,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     thisYearDescription:
                         '${getThisYear() - 1}년부터 ${getThisYear() - 3}년의 기간 동안 판단합니다.',
                     thisPeriodOnTap: () => _onPeriodCardTap(1),
-                    selectedPeriodCardNum: selectedPeriodCard,
+                    selectedPeriodCardNum: _selectedPeriodCard,
                     thisPeriodCardNum: 1,
                   ),
                   const SizedBox(width: 20),
@@ -246,7 +255,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     thisYearDescription:
                         '${getThisYear() - 1}년부터 ${getThisYear() - 5}년의 기간 동안 판단합니다.',
                     thisPeriodOnTap: () => _onPeriodCardTap(2),
-                    selectedPeriodCardNum: selectedPeriodCard,
+                    selectedPeriodCardNum: _selectedPeriodCard,
                     thisPeriodCardNum: 2,
                   ),
                 ],
@@ -264,7 +273,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     thisPropTitle: '공격투자형',
                     thisPropDescription: '자산가치의 변동에 따른\n손실위험을 적극 수용함',
                     thisPropNum: 1,
-                    selectedPropensityCard: selectedPropensityCard,
+                    selectedPropensityCard: _selectedPropensityCard,
                     thisPropOnTap: () => _onPropensityCardTap(1),
                   ),
                   Gaps.h20,
@@ -272,7 +281,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     thisPropTitle: '위험중립형',
                     thisPropDescription: '투자에 상응하는 투자위험이\n있음을 충분히 인식하고 있음',
                     thisPropNum: 2,
-                    selectedPropensityCard: selectedPropensityCard,
+                    selectedPropensityCard: _selectedPropensityCard,
                     thisPropOnTap: () => _onPropensityCardTap(2),
                   ),
                   Gaps.h20,
@@ -280,7 +289,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     thisPropTitle: '안정형',
                     thisPropDescription: '투자원금에 손실이 발생하는 것을\n원하지 않음',
                     thisPropNum: 3,
-                    selectedPropensityCard: selectedPropensityCard,
+                    selectedPropensityCard: _selectedPropensityCard,
                     thisPropOnTap: () => _onPropensityCardTap(3),
                   ),
                 ],
