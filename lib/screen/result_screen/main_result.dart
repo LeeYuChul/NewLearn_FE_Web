@@ -5,6 +5,7 @@ import 'package:newlearn_fe_web/constants/constants.dart';
 class MainResultPage extends StatefulWidget {
   final Map<String, dynamic>? selectedStock;
   final int? selectedPeriodCard, selectedPropensityCard;
+  final String caseType = 'HOLD'; // caseType 변수 추가
 
   const MainResultPage({
     super.key,
@@ -25,6 +26,7 @@ class _MainResultPageState extends State<MainResultPage> {
   @override
   void initState() {
     super.initState();
+    setLoadingStop();
     _startRollingText();
   }
 
@@ -32,6 +34,14 @@ class _MainResultPageState extends State<MainResultPage> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+  }
+
+  void setLoadingStop() {
+    _timer = Timer(const Duration(seconds: 6), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   void _startRollingText() {
@@ -57,9 +67,34 @@ class _MainResultPageState extends State<MainResultPage> {
     }
   }
 
+  Widget getAnimationWidget(String caseType) {
+    switch (caseType) {
+      case 'BUY':
+        return WebAnimation.result_good;
+      case 'HOLD':
+        return WebAnimation.result_hold;
+      // 필요한 경우 다른 case를 추가할 수 있습니다.
+      default:
+        return WebAnimation.result_good; // 기본값
+    }
+  }
+
+  Color getTextColor(String caseType) {
+    switch (caseType) {
+      case 'BUY':
+        return AppColors.Blue;
+      case 'HOLD':
+        return AppColors.Oragne;
+      // 필요한 경우 다른 case를 추가할 수 있습니다.
+      default:
+        return AppColors.Black; // 기본값
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String currentMessage = getCurrentMessage();
+    String caseType = widget.caseType; // caseType 변수 가져오기
 
     if (isLoading) {
       return Align(
@@ -86,46 +121,86 @@ class _MainResultPageState extends State<MainResultPage> {
     }
 
     // 로딩완료 후 결과 화면
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(24),
-      color: Colors.white.withOpacity(0.8),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(24, 24, 24, 12),
+            padding: const EdgeInsets.fromLTRB(48, 24, 48, 48),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Gaps.v100,
-                    Text('매수 투자의견',
-                        style: AppTextStyles.sc_30_b
-                            .copyWith(color: Colors.black)),
-                    Gaps.v15,
-                    Text(
-                      'BUY',
-                      style:
-                          AppTextStyles.sc_40_b.copyWith(color: Colors.black),
-                    )
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Gaps.v60,
+                        Text(
+                          '${widget.selectedStock?['name']} 기업 매수 투자의견',
+                          style: AppTextStyles.sc_30_b
+                              .copyWith(color: Colors.black),
+                        ),
+                        Gaps.v15,
+                        Text(
+                          caseType,
+                          style: TextStyle(
+                            fontFamily: 'score',
+                            fontSize: 60,
+                            fontWeight: FontWeight.w800,
+                            height: 72 / 60,
+                            color: getTextColor(caseType),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 380,
+                      width: 500,
+                      child: getAnimationWidget(caseType),
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 400,
-                  width: 400,
-                  child: WebAnimation.result_good,
-                ),
+                Gaps.v50,
+                Text('투자 의견사유',
+                    style: AppTextStyles.sc_30_b.copyWith(color: Colors.black)),
+                Gaps.v20,
+                Text('의견사유를 입력해주세요',
+                    style: AppTextStyles.sc_20_r.copyWith(color: Colors.black)),
               ],
             ),
-            Text('투자 의견사유',
-                style: AppTextStyles.sc_30_b.copyWith(color: Colors.black)),
-            Gaps.v20,
-            Text('의견사유를 입력해주세요',
-                style: AppTextStyles.sc_20_r.copyWith(color: Colors.black)),
-          ],
-        ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+            padding: const EdgeInsets.fromLTRB(48, 24, 48, 48),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gaps.v20,
+                Text('${widget.selectedStock?['name']} 기업 매수 상세 보고서',
+                    style: AppTextStyles.sc_30_b.copyWith(color: Colors.black)),
+                Gaps.v20,
+                Container(
+                  width: double.infinity,
+                  height: 3,
+                  color: AppColors.G5,
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
