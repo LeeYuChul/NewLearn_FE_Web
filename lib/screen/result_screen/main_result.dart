@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:newlearn_fe_web/constants/animation_table.dart';
 import 'dart:async';
 import 'package:newlearn_fe_web/constants/constants.dart';
 
