@@ -19,6 +19,9 @@ class _MainHomePageState extends State<MainHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final homePageDesktopState =
+        HomePageDesktop.homePageDesktopKey.currentState;
+
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Stack(
@@ -29,10 +32,22 @@ class _MainHomePageState extends State<MainHomePage> {
           Positioned.fill(
             child: ResponsiveLayout(
               desktopBody: showResultPage
-                  ? const MainResultPage()
+                  ? MainResultPage(
+                      selectedStock: homePageDesktopState?.selectedStock,
+                      selectedPeriodCard:
+                          homePageDesktopState?.selectedPeriodCard,
+                      selectedPropensityCard:
+                          homePageDesktopState?.selectedPropensityCard,
+                    )
                   : HomePageDesktop(onNext: navigateToResultPage),
               mobileBody: showResultPage
-                  ? const MainResultPage()
+                  ? MainResultPage(
+                      selectedStock: homePageDesktopState?.selectedStock,
+                      selectedPeriodCard:
+                          homePageDesktopState?.selectedPeriodCard,
+                      selectedPropensityCard:
+                          homePageDesktopState?.selectedPropensityCard,
+                    )
                   : HomePageDesktop(
                       onNext:
                           navigateToResultPage), // 수정 필요함 추후에 HomePageMobile()로 변경
