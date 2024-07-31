@@ -172,7 +172,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
         child: TextField(
           controller: _controller,
           decoration: InputDecoration(
-            hintText: 'ex) 삼성전자',
+            hintText: 'ex) 미래에셋증권, NAVER',
             hintStyle: const TextStyle(
               color: AppColors.G3,
             ),
@@ -245,18 +245,18 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     thisYearTitle: '3년',
                     thisYearDescription:
                         '${getThisYear() - 1}년부터 ${getThisYear() - 3}년의 기간 동안 판단합니다.',
-                    thisPeriodOnTap: () => _onPeriodCardTap(1),
+                    thisPeriodOnTap: () => _onPeriodCardTap(3),
                     selectedPeriodCardNum: _selectedPeriodCard,
-                    thisPeriodCardNum: 1,
+                    thisPeriodCardNum: 3,
                   ),
                   const SizedBox(width: 20),
                   PeriodCard(
                     thisYearTitle: '5년',
                     thisYearDescription:
                         '${getThisYear() - 1}년부터 ${getThisYear() - 5}년의 기간 동안 판단합니다.',
-                    thisPeriodOnTap: () => _onPeriodCardTap(2),
+                    thisPeriodOnTap: () => _onPeriodCardTap(5),
                     selectedPeriodCardNum: _selectedPeriodCard,
-                    thisPeriodCardNum: 2,
+                    thisPeriodCardNum: 5,
                   ),
                 ],
               ),

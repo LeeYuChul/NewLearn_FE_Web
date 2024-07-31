@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: '팀 뉴런 | value investment',
+      title: '팀 뉴런 | ESG 가치 통합 평가',
       theme: themeData,
       initialRoute: '/home',
       onGenerateRoute: Routes.generateRoute,

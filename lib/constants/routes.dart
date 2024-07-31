@@ -8,7 +8,7 @@ class Routes {
       case '/home':
         return PageTransition(widget: const MainHomePage());
       case '/result':
-        return PageTransition(widget: const MainResultPage());
+        return PageTransition(widget: MainResultPage());
       default:
         return PageTransition(widget: const MainHomePage());
     }

@@ -1,11 +1,15 @@
+// main_result_page.dart
 import 'package:flutter/material.dart';
+import 'package:newlearn_fe_web/constants/api_model_manage.dart';
 import 'dart:async';
 import 'package:newlearn_fe_web/constants/constants.dart';
+import 'package:newlearn_fe_web/screen/result_screen/fin_data_display.dart';
+import 'package:newlearn_fe_web/screen/result_screen/stock_data_display.dart';
+import 'package:newlearn_fe_web/screen/result_screen/esg_data_display.dart';
 
 class MainResultPage extends StatefulWidget {
   final Map<String, dynamic>? selectedStock;
   final int? selectedPeriodCard, selectedPropensityCard;
-  final String caseType = 'HOLD'; // caseType 변수 추가
 
   const MainResultPage({
     super.key,
@@ -23,11 +27,24 @@ class _MainResultPageState extends State<MainResultPage> {
   int _currentIndex = 0;
   late Timer _timer;
 
+  // UI에 표시될 데이터들 선언
+  String caseType = 'BUY';
+  String reason = '';
+  bool showStockData = false;
+  bool showEsgData = false;
+  bool showFinancialData = false; // 재무 데이터 표시 여부
+  StockDataModel? stockData;
+  List<EsgNewsModel>? esgData; // ESG 데이터
+  List<FinancialDataModel>? financialData; // 재무 데이터
+
   @override
   void initState() {
     super.initState();
-    setLoadingStop();
     _startRollingText();
+    clovaAPI();
+    getStockData();
+    getEsgResult();
+    getFinancialData();
   }
 
   @override
@@ -36,19 +53,82 @@ class _MainResultPageState extends State<MainResultPage> {
     super.dispose();
   }
 
-  void setLoadingStop() {
-    _timer = Timer(const Duration(seconds: 6), () {
+  void _startRollingText() {
+    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       setState(() {
-        isLoading = false;
+        _currentIndex = (_currentIndex + 1) % 5;
       });
     });
   }
 
-  void _startRollingText() {
-    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
+  Future<void> getFinancialData() async {
+    try {
+      final result = await DetailResultApiManage.fetchFinancialData(
+          widget.selectedStock?['code'], widget.selectedPeriodCard ?? 3);
       setState(() {
-        _currentIndex = (_currentIndex + 1) % 4; // 4 different messages
+        financialData = result;
       });
+    } catch (e) {
+      print('Error fetching financial data: $e');
+    }
+  }
+
+  Future<void> getStockData() async {
+    try {
+      final result = await DetailResultApiManage.fetchStockData(
+          widget.selectedStock?['code']);
+      setState(() {
+        stockData = result;
+      });
+    } catch (e) {
+      print('Error fetching stock data: $e');
+    }
+  }
+
+  Future<void> getEsgResult() async {
+    try {
+      final result = await DetailResultApiManage.fetchEsgNewsResults(
+          widget.selectedStock?['code']);
+      setState(() {
+        esgData = result;
+      });
+    } catch (e) {
+      print('Error fetching ESG data: $e');
+    }
+  }
+
+  void clovaAPI() async {
+    try {
+      final result = await ClovaApiManage.fetchFinalAnswer(
+        companyName: widget.selectedStock?['name'],
+        stockCode: widget.selectedStock?['code'],
+        period: widget.selectedPeriodCard.toString(),
+      );
+      setState(() {
+        caseType = result.buysellopinion;
+        reason = result.reason;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  void toggleStockDataDisplay() {
+    setState(() {
+      showStockData = !showStockData;
+    });
+  }
+
+  void toggleEsgDataDisplay() {
+    setState(() {
+      showEsgData = !showEsgData;
+    });
+  }
+
+  void toggleFinancialData() {
+    setState(() {
+      showFinancialData = !showFinancialData;
     });
   }
 
@@ -62,6 +142,8 @@ class _MainResultPageState extends State<MainResultPage> {
         return '${widget.selectedStock?['name']} 기업의 재무제표 데이터를 분석하고 있습니다';
       case 3:
         return '곧 분석 결과를 알려드리겠습니다';
+      case 4:
+        return '결과를 받기까지 평균 1분 40초가 필요합니다';
       default:
         return '';
     }
@@ -73,9 +155,8 @@ class _MainResultPageState extends State<MainResultPage> {
         return WebAnimation.result_good;
       case 'HOLD':
         return WebAnimation.result_hold;
-      // 필요한 경우 다른 case를 추가할 수 있습니다.
       default:
-        return WebAnimation.result_good; // 기본값
+        return WebAnimation.result_good;
     }
   }
 
@@ -85,16 +166,14 @@ class _MainResultPageState extends State<MainResultPage> {
         return AppColors.Blue;
       case 'HOLD':
         return AppColors.Oragne;
-      // 필요한 경우 다른 case를 추가할 수 있습니다.
       default:
-        return AppColors.Black; // 기본값
+        return AppColors.Black;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     String currentMessage = getCurrentMessage();
-    String caseType = widget.caseType; // caseType 변수 가져오기
 
     if (isLoading) {
       return Align(
@@ -120,7 +199,6 @@ class _MainResultPageState extends State<MainResultPage> {
       );
     }
 
-    // 로딩완료 후 결과 화면
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +222,7 @@ class _MainResultPageState extends State<MainResultPage> {
                       children: [
                         Gaps.v60,
                         Text(
-                          '${widget.selectedStock?['name']} 기업 매수 투자의견',
+                          '${widget.selectedStock?['name']} ESG 가치 통합 분석',
                           style: AppTextStyles.sc_30_b
                               .copyWith(color: Colors.black),
                         ),
@@ -169,10 +247,10 @@ class _MainResultPageState extends State<MainResultPage> {
                   ],
                 ),
                 Gaps.v50,
-                Text('투자 의견사유',
+                Text('AI 매수 의견서',
                     style: AppTextStyles.sc_30_b.copyWith(color: Colors.black)),
                 Gaps.v20,
-                Text('의견사유를 입력해주세요',
+                Text(reason,
                     style: AppTextStyles.sc_20_r.copyWith(color: Colors.black)),
               ],
             ),
@@ -196,7 +274,28 @@ class _MainResultPageState extends State<MainResultPage> {
                   width: double.infinity,
                   height: 3,
                   color: AppColors.G5,
-                )
+                ),
+                Gaps.v20,
+                if (stockData != null)
+                  StockDataDisplay(
+                    stockData: stockData!,
+                    showStockData: showStockData,
+                    toggleDisplay: toggleStockDataDisplay,
+                  ),
+                Gaps.v20,
+                if (esgData != null)
+                  EsgDataDisplay(
+                    esgData: esgData!,
+                    showEsgData: showEsgData,
+                    toggleDisplay: toggleEsgDataDisplay,
+                  ),
+                Gaps.v20,
+                if (financialData != null)
+                  FinancialDataDisplay(
+                    financialData: financialData!,
+                    showFinancialData: showFinancialData,
+                    toggleDisplay: toggleFinancialData,
+                  ),
               ],
             ),
           ),
