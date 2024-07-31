@@ -44,12 +44,6 @@ class PropensityCard extends StatelessWidget {
                 style: AppTextStyles.sc_24_b.copyWith(color: Colors.black),
               ),
               Gaps.v25,
-              Container(
-                width: 200,
-                height: 200,
-                color: Colors.grey,
-              ),
-              Gaps.v25,
               SizedBox(
                 height: 48,
                 child: Text(

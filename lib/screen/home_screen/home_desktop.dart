@@ -247,7 +247,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                         '${getThisYear() - 1}년부터 ${getThisYear() - 3}년의 기간 동안 판단합니다.',
                     thisPeriodOnTap: () => _onPeriodCardTap(1),
                     selectedPeriodCardNum: _selectedPeriodCard,
-                    thisPeriodCardNum: 1,
+                    thisPeriodCardNum: 3,
                   ),
                   const SizedBox(width: 20),
                   PeriodCard(
@@ -256,7 +256,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                         '${getThisYear() - 1}년부터 ${getThisYear() - 5}년의 기간 동안 판단합니다.',
                     thisPeriodOnTap: () => _onPeriodCardTap(2),
                     selectedPeriodCardNum: _selectedPeriodCard,
-                    thisPeriodCardNum: 2,
+                    thisPeriodCardNum: 5,
                   ),
                 ],
               ),
