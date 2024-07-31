@@ -110,7 +110,7 @@ class _MainResultPageState extends State<MainResultPage> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error fetching data: $e');
+      print('클로바:Error fetching data: $e');
     }
   }
 
