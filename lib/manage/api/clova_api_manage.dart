@@ -35,10 +35,8 @@ class ClovaApiManage {
           '$stockCode, $companyName의 실시간 주가(PBR,PER 등), ESG 데이터, 재무제표 3년치 데이터를 보고 ESG와 가치투자를 종합적으로 판단하여 가치 통합 평가를 하여 주식 매수의견을 주세요',
       'tokenStream': false,
     });
-    print('클로바 요청됨 : $body');
 
     final response = await http.post(url, headers: headers, body: body);
-    print(response);
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);

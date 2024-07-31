@@ -21,8 +21,6 @@ class DetailResultApiManage {
       'period': period,
     });
 
-    print('재무제표 데이터 호출됨');
-
     final response = await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
@@ -63,7 +61,6 @@ class DetailResultApiManage {
     final headers = {'Content-Type': 'application/json'};
 
     final response = await http.get(url, headers: headers);
-    print('호출됨');
 
     if (response.statusCode == 200) {
       final String responseBody = utf8.decode(response.bodyBytes);
