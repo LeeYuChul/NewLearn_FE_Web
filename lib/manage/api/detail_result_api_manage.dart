@@ -21,6 +21,8 @@ class DetailResultApiManage {
       'period': period,
     });
 
+    print('재무제표 데이터 호출됨');
+
     final response = await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {

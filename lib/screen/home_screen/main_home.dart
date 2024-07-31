@@ -9,7 +9,7 @@ class MainHomePage extends StatefulWidget {
 }
 
 class _MainHomePageState extends State<MainHomePage> {
-  bool showResultPage = true;
+  bool showResultPage = false;
 
   void navigateToResultPage() {
     setState(() {
@@ -32,14 +32,12 @@ class _MainHomePageState extends State<MainHomePage> {
           Positioned.fill(
             child: ResponsiveLayout(
               desktopBody: showResultPage
-                  ? const MainResultPage(
-                      selectedStock: {
-                        'name': '삼성전자',
-                        'code': '005930',
-                        'market': 'KOSPI',
-                      },
-                      selectedPeriodCard: 1,
-                      selectedPropensityCard: 3,
+                  ? MainResultPage(
+                      selectedStock: homePageDesktopState?.selectedStock,
+                      selectedPeriodCard:
+                          homePageDesktopState?.selectedPeriodCard,
+                      selectedPropensityCard:
+                          homePageDesktopState?.selectedPropensityCard,
                     )
                   : HomePageDesktop(onNext: navigateToResultPage),
               mobileBody: showResultPage

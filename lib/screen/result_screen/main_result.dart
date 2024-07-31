@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:newlearn_fe_web/constants/api_model_manage.dart';
 import 'dart:async';
 import 'package:newlearn_fe_web/constants/constants.dart';
+import 'package:newlearn_fe_web/screen/result_screen/fin_data_display.dart';
 import 'package:newlearn_fe_web/screen/result_screen/stock_data_display.dart';
 import 'package:newlearn_fe_web/screen/result_screen/esg_data_display.dart';
 
@@ -30,17 +31,20 @@ class _MainResultPageState extends State<MainResultPage> {
   String caseType = 'BUY';
   String reason = '';
   bool showStockData = false;
-  bool showEsgData = false; // ESG 데이터 표시 여부
+  bool showEsgData = false;
+  bool showFinancialData = false; // 재무 데이터 표시 여부
   StockDataModel? stockData;
   List<EsgNewsModel>? esgData; // ESG 데이터
+  List<FinancialDataModel>? financialData; // 재무 데이터
 
   @override
   void initState() {
     super.initState();
-    setLoadingStop();
     _startRollingText();
+    clovaAPI();
     getStockData();
     getEsgResult();
+    getFinancialData();
   }
 
   @override
@@ -49,20 +53,24 @@ class _MainResultPageState extends State<MainResultPage> {
     super.dispose();
   }
 
-  void setLoadingStop() {
-    _timer = Timer(const Duration(seconds: 0), () {
+  void _startRollingText() {
+    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       setState(() {
-        isLoading = false;
+        _currentIndex = (_currentIndex + 1) % 5;
       });
     });
   }
 
-  void _startRollingText() {
-    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
+  Future<void> getFinancialData() async {
+    try {
+      final result = await DetailResultApiManage.fetchFinancialData(
+          widget.selectedStock?['code'], widget.selectedPeriodCard ?? 3);
       setState(() {
-        _currentIndex = (_currentIndex + 1) % 4;
+        financialData = result;
       });
-    });
+    } catch (e) {
+      print('Error fetching financial data: $e');
+    }
   }
 
   Future<void> getStockData() async {
@@ -99,6 +107,7 @@ class _MainResultPageState extends State<MainResultPage> {
       setState(() {
         caseType = result.buysellopinion;
         reason = result.reason;
+        isLoading = false;
       });
     } catch (e) {
       print('Error fetching data: $e');
@@ -117,6 +126,12 @@ class _MainResultPageState extends State<MainResultPage> {
     });
   }
 
+  void toggleFinancialData() {
+    setState(() {
+      showFinancialData = !showFinancialData;
+    });
+  }
+
   String getCurrentMessage() {
     switch (_currentIndex) {
       case 0:
@@ -127,6 +142,8 @@ class _MainResultPageState extends State<MainResultPage> {
         return '${widget.selectedStock?['name']} 기업의 재무제표 데이터를 분석하고 있습니다';
       case 3:
         return '곧 분석 결과를 알려드리겠습니다';
+      case 4:
+        return '결과를 받기까지 평균 1분 40초가 필요합니다';
       default:
         return '';
     }
@@ -271,6 +288,13 @@ class _MainResultPageState extends State<MainResultPage> {
                     esgData: esgData!,
                     showEsgData: showEsgData,
                     toggleDisplay: toggleEsgDataDisplay,
+                  ),
+                Gaps.v20,
+                if (financialData != null)
+                  FinancialDataDisplay(
+                    financialData: financialData!,
+                    showFinancialData: showFinancialData,
+                    toggleDisplay: toggleFinancialData,
                   ),
               ],
             ),
