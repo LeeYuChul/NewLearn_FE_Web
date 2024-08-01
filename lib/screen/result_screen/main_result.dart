@@ -23,7 +23,7 @@ class MainResultPage extends StatefulWidget {
 }
 
 class _MainResultPageState extends State<MainResultPage> {
-  bool isLoading = true;
+  bool isLoading = false;
   int _currentIndex = 0;
   late Timer _timer;
 
@@ -41,7 +41,7 @@ class _MainResultPageState extends State<MainResultPage> {
   void initState() {
     super.initState();
     _startRollingText();
-    clovaAPI();
+    // clovaAPI();
     getStockData();
     getEsgResult();
     getFinancialData();

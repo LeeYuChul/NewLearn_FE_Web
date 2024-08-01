@@ -7,9 +7,9 @@ import 'package:newlearn_fe_web/manage/model/finanacial_model.dart';
 import 'package:newlearn_fe_web/manage/model/realtime_stock_model.dart';
 
 class DetailResultApiManage {
-  static String baseUrl = 'http://3.37.85.254:5001';
-  static String esgBaseUrl = 'http://3.37.85.254:5002';
-  static String stockBaseUrl = 'http://15.165.27.24';
+  static String baseUrl = 'https://3.37.85.254/financial';
+  static String esgBaseUrl = 'https://3.37.85.254/esg';
+  static String stockBaseUrl = 'https://15.165.27.24';
 
   // 재무제표 데이터를 가져오는 API
   static Future<List<FinancialDataModel>> fetchFinancialData(
