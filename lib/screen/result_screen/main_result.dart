@@ -42,7 +42,7 @@ class _MainResultPageState extends State<MainResultPage> {
     super.initState();
     _startRollingText();
     // clovaAPI();
-    getStockData();
+    // getStockData();
     getEsgResult();
     getFinancialData();
   }

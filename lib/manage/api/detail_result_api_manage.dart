@@ -15,7 +15,9 @@ class DetailResultApiManage {
   static Future<List<FinancialDataModel>> fetchFinancialData(
       String companyStockCode, int period) async {
     final url = Uri.parse('$baseUrl/financial_statements');
-    final headers = {'Content-Type': 'application/json'};
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final body = jsonEncode({
       'company_stock_code': companyStockCode,
       'period': period,
@@ -30,7 +32,8 @@ class DetailResultApiManage {
           .map((json) => FinancialDataModel.fromJson(json))
           .toList();
     } else {
-      throw Exception('Failed to load financial data: ${response.statusCode}');
+      print(response.body);
+      throw Exception('Failed to load financial data: $response');
     }
   }
 
@@ -38,7 +41,9 @@ class DetailResultApiManage {
   static Future<List<EsgNewsModel>> fetchEsgNewsResults(
       String companyStockCode) async {
     final url = Uri.parse('$esgBaseUrl/esg_results');
-    final headers = {'Content-Type': 'application/json'};
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final body = jsonEncode({
       'company_stock_code': companyStockCode,
     });
@@ -50,8 +55,7 @@ class DetailResultApiManage {
       final List<dynamic> jsonResponse = jsonDecode(responseBody);
       return jsonResponse.map((json) => EsgNewsModel.fromJson(json)).toList();
     } else {
-      throw Exception(
-          'Failed to load ESG news results: ${response.statusCode}');
+      throw Exception('Failed to load ESG news results: $response');
     }
   }
 
@@ -67,7 +71,7 @@ class DetailResultApiManage {
       final Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
       return StockDataModel.fromJson(jsonResponse['data']);
     } else {
-      throw Exception('Failed to load stock data: ${response.statusCode}');
+      throw Exception('Failed to load stock data: $response');
     }
   }
 }
