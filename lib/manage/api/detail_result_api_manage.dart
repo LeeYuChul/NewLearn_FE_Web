@@ -7,9 +7,9 @@ import 'package:newlearn_fe_web/manage/model/finanacial_model.dart';
 import 'package:newlearn_fe_web/manage/model/realtime_stock_model.dart';
 
 class DetailResultApiManage {
-  static String baseUrl = 'https://3.37.85.254/financial';
-  static String esgBaseUrl = 'https://3.37.85.254/esg';
-  static String stockBaseUrl = 'https://15.165.27.24';
+  static String baseUrl = 'https://aipy.startingblock.co.kr/financial';
+  static String esgBaseUrl = 'https://aipy.startingblock.co.kr/esg';
+  static String stockBaseUrl = 'https://newlearn.startingblock.co.kr';
 
   // 재무제표 데이터를 가져오는 API
   static Future<List<FinancialDataModel>> fetchFinancialData(
@@ -32,7 +32,6 @@ class DetailResultApiManage {
           .map((json) => FinancialDataModel.fromJson(json))
           .toList();
     } else {
-      print(response.body);
       throw Exception('Failed to load financial data: $response');
     }
   }

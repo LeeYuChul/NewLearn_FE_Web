@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:newlearn_fe_web/manage/model/clova_answer_model.dart';
 
 class ClovaApiManage {
-  static const String apiUrl = 'https://3.37.85.254/clova/clova_chat';
+  static const String apiUrl =
+      'https://aipy.startingblock.co.kr/clova/clova_chat';
 
   static Future<FinalAnswerDetail> fetchFinalAnswer({
     required String companyName,

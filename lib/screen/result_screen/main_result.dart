@@ -23,7 +23,7 @@ class MainResultPage extends StatefulWidget {
 }
 
 class _MainResultPageState extends State<MainResultPage> {
-  bool isLoading = false;
+  bool isLoading = true;
   int _currentIndex = 0;
   late Timer _timer;
 
@@ -41,8 +41,8 @@ class _MainResultPageState extends State<MainResultPage> {
   void initState() {
     super.initState();
     _startRollingText();
-    // clovaAPI();
-    // getStockData();
+    clovaAPI();
+    getStockData();
     getEsgResult();
     getFinancialData();
   }
@@ -221,10 +221,15 @@ class _MainResultPageState extends State<MainResultPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Gaps.v60,
-                        Text(
-                          '${widget.selectedStock?['name']} ESG 가치 통합 분석',
-                          style: AppTextStyles.sc_30_b
-                              .copyWith(color: Colors.black),
+                        Row(
+                          children: [
+                            Text(
+                              '${widget.selectedStock?['name']} ESG 가치 통합 평가',
+                              style: AppTextStyles.sc_30_b
+                                  .copyWith(color: Colors.black),
+                            ),
+                            Gaps.h10,
+                          ],
                         ),
                         Gaps.v15,
                         Text(
